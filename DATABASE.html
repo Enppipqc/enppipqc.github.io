@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="css/bootstrap.min.css" type="text/css"  rel="stylesheet"/>
+    <link href="css/EnppiStyle.css" type="text/css"  rel="stylesheet"/>
+    <title>Enppi Site Management System</title>
+    
+</head>
+<body>
+    
+    <br><br>
+    <button onclick="writeData()" style="background-color:rgb(104, 180, 247)">POST DATA</button>
+    <div id="table_data" class="mt-5"><center></centre><img src="IMAGES/progress.gif"></a></div></center>
+
+<script>
+var sortBy="serial";
+var importedData= undefined;
+const DatabaseKeys = ["serial","System","SYSTEM_DESC","Tag_No","TAG_DESC"];
+async function databaseFetch() {
+          try { 
+          let response = await fetch('https://prj-3750-200-default-rtdb.firebaseio.com/Database/.json');
+            console.log(response.ok)
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          } else {
+            const data = await response.json() ;
+            unsortedList=data;
+            console.log(data);
+           // const sortedList2 = unsortedList.sort((a, b) => a.age.localeCompare(b.age));
+            //console.log(sortedList2);
+          importedData=data;
+          Tabledraw(data,DatabaseKeys);
+          
+          }
+        } catch(e) {
+          console.log(e);
+        }
+      }
+
+      async function Tabledraw(tableData,headerArry){
+
+           var table_output = '<table class="table table-striped table-bordered table-responsive">';
+            //Draw header 
+            table_output += '<tr>'
+              headerArry.forEach((value) =>{ table_output += '<th>'+value+'</th>'})
+            table_output += '</tr>';
+           
+           //fill table Data
+           tableData.forEach(obj => {
+                table_output += '<tr>';
+                  headerArry.forEach((value) =>{ table_output += '<td>'+obj[value]+'</td>'})            
+                table_output += '</tr>';             
+                            });
+            //Close table  
+            table_output += '</table>';
+            
+            //Draw Table at Html
+            document.getElementById('table_data').innerHTML = table_output;
+
+
+
+
+      }
+
+     async function writeData(){
+      try {
+        const update = {
+                      title: 'A blog post by Mostafa',
+                      body: 'TEST by SHEHAB',
+                      userId: 122,
+                        };
+
+        const options = {
+                      method: 'PUT',
+                    headers: {
+                                'Content-Type': 'application/json',
+                              },
+                    body: JSON.stringify(update),
+                        };
+
+                        fetch('https://prj-3750-200-default-rtdb.firebaseio.com/Users/2/.json', options)
+  .then(data => {
+      if (!data.ok) {
+        throw Error(data.status);
+       }else{console.log(data.ok)}
+       return data.json();
+      }).then(update => { console.log(update);
+      });
+
+      } catch(e) {
+          console.log(e);
+        }
+      }
+
+      //test();
+     databaseFetch();
+</script>
+    
+</body>
+</html>
