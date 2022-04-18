@@ -6,374 +6,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="IMAGES/SQ.Tool.png" rel="shortcut icon">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  <title> SQ.Tool Menu Form  </title>
-    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
-    <script src="https://smtpjs.com/v3/smtp.js"></script>
-    <script src="index.js"></script>
-    <title>Request for Inspection</title>
-<style>
-.bkcolor{
-background-color: rgb(0, 255, 76);
-width:50%;
-font-stretch: expanded;
-text-align: center;
-text-orientation:sideways;}
-
-.grid-container6 {
-  display: grid;
-  justify-content: left;
-  grid-template-columns:  10% 30% 4% 10% 30% ; /*Make the grid smaller than the container*/
-  grid-gap: 1px;
-  background-color: rgb(245, 245, 248);
-  padding: 10px;
-}
-
-.num {
-  background-color: red;
-  text-align: center;
-
-  padding: 20px 0;
-  font-size: auto;
-}
-
-
-.textcolor{
-    font-size: 10px;
-    color: red;
-    height: 30px;
-    position:relative;
-}
-
-
-
-</style>
+  <title> SQ.Tool Inspection Database  </title>
+    
 </head>
 <body>
+    
+  <a href="www.enppi.com"> <img src="IMAGES/logo.png"></a>
+  <h1><center><strong>Inspection Database</strong></center></h1>
+    <div id="table_data" class="mt-5"><center></centre><img src="IMAGES/progress.gif"></a></div></center>
 
-   <center><h1 >Request For Inspection</h1><br></center>
-   <p id="Userlogged">User name</p>
-   <form>
-    <div class="input-group input-group-outline mb-4">
-      <label class="form-label">Label</label>
-      <input type="text" class="form-control">
-    </div>
+<script>
+var sortBy="serial";
+var importedData= undefined;
+const DatabaseKeys = ["serial","System","Discipline","SYSTEM_DESC","Tag_No","TAG_DESC","CheckForm_No","CheckForm_DESC"];
+async function databaseFetch() {
+          try { 
+          let response = await fetch('https://prj-3750-200-default-rtdb.firebaseio.com/Database/.json');
+            console.log(response.ok)
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          } else {
+            const data = await response.json() ;
+            unsortedList=data;
+            console.log(data);
+           // const sortedList2 = unsortedList.sort((a, b) => a.age.localeCompare(b.age));
+            //console.log(sortedList2);
+          importedData=data;
+          Tabledraw(data,DatabaseKeys);
+          
+          }
+        } catch(e) {
+          console.log(e);
+        }
+      }
 
-    <div class="input-group input-group-dynamic mb-4">
-      <label class="form-label">Label</label>
-      <input type="text" class="form-control">
-    </div>
+      async function Tabledraw(tableData,headerArry){
 
-    <div class="input-group input-group-static mb-4">
-      <label>Label</label>
-      <input type="text" class="form-control">
-    </div>
-  </form>       
-            <form  method="post"  >
-                   <div >
-                     
-                        
-                      <div class="form-group-sm"> 
-                        <div class="col-md-2">
-                            <label for="Project_NUMBER">RFI NUMBER:</label>  
-                        </div>
-                        <div class="col-md-4">
-                            <input class="form-control" id="Project_NUMBER" placeholder="Project No." type="text" >
-                        </div>
-        
-                        <div class="col-md-2">
-                          <label for="RFI_NUMBER">RFI NUMBER:</label>  
-                        </div>
-                        <div class="col-md-4">
-                          <input class="form-control" id="RFI_NUMBER" placeholder="RFI No." type="text" >
-                        </div>
-                       
-                      </div><div class="col-md-12"></div> 
-                      <div class="form-group-sm"> 
-                        <div class="col-md-2">
-                            <label for="Project_NUMBER">RFI NUMBER:</label>  
-                        </div>
-                        <div class="col-md-4">
-                            <input class="form-control" id="Project_NUMBER" placeholder="Project No." type="text" >
-                        </div>
-                        <div class="col-md-2">
-                          <label for="RFI_NUMBER">RFI NUMBER:</label>  
-                        </div>
-                        <div class="col-md-4">
-                          <input class="form-control" id="RFI_NUMBER" placeholder="RFI No." type="text" >
-                        </div>
-                      </div> 
-                    </div><div class="col-md-12"></div>  
-                    
-                    <div class="form-group"> 
-                      <div class="col-md-2">
-                          <label for="Project_NUMBER">RFI NUMBER:</label>  
-                      </div>
-                      <div class="col-md-4">
-                          <input class="form-control" id="Project_NUMBER" placeholder="Project No." type="text" >
-                      </div>
-      
-                      <div class="col-md-2">
-                        <label for="RFI_NUMBER">RFI NUMBER:</label>  
-                      </div>
-                      <div class="col-md-4">
-                        <input class="form-control" id="RFI_NUMBER" placeholder="RFI No." type="text" >
-                      </div>
-                     
-                    </div><div class="col-md-12"></div> 
-                    <div class="form-group"> 
-                      <div class="col-md-2">
-                          <label for="Project_NUMBER">RFI NUMBER:</label>  
-                      </div>
-                      <div class="col-md-4">
-                          <input class="form-control" id="Project_NUMBER" placeholder="Project No." type="text" >
-                      </div>
-      
-                      <div class="col-md-2">
-                        <label for="RFI_NUMBER">RFI NUMBER:</label>  
-                      </div>
-                      <div class="col-md-4">
-                        <input class="form-control" id="RFI_NUMBER" placeholder="RFI No." type="text" >
-                      </div>
-                     
-                    </div><div class="col-md-12"></div> 
-                                          <div class="form-group"> 
-                        <div class="col-md-2">
-                            <label for="Project_NUMBER">RFI NUMBER:</label>  
-                        </div>
-                        <div class="col-md-4">
-                            <input class="form-control" id="Project_NUMBER" placeholder="Project No." type="text" >
-                        </div>
-        
-                        <div class="col-md-2">
-                          <label for="RFI_NUMBER">RFI NUMBER:</label>  
-                        </div>
-                        <div class="col-md-4">
-                          <input class="form-control" id="RFI_NUMBER" placeholder="RFI No." type="text" >
-                        </div>
-                       
-                      </div><div class="col-md-12"></div> 
-                    </div>
-                            <div class="col-md-12">
-                                <textarea class="form-control" id="message" rows="7" placeholder="Your Message"></textarea>
-                            </div>
-
-                            <div class="mt-5"><table>
-                      <tr><th></th><th>PETROJET</th><th>ENPPI</th><th>SOPC</th></tr>
-
-                    </table></div>
-
-                            <div class="col-md-12 text-right">
-                                <button type="submit" class="btn btn-green">PRINT RFI</button>
-                                <button class="btn btn-green" onclick="writeData()">SEND RFI</button>
-                                <input type="button" value="Send Email" onclick="sendEmail()"/>
-                                <input type="button" class="btn btn-green" value="GO" onclick="go('3')"/>
-                              </div>
-                        
-            </form>
-                    <h3>RFI LIST</h3>
-
-                    <div id="table_data" class="mt-5"><center><img src="IMAGES/progress.gif"></center></div>
-              <!--End contact form-->
+           var table_output = '<table class="table table-striped table-bordered table-responsive">';
+            //Draw header 
+            table_output += '<tr>'
+              headerArry.forEach((value) =>{ table_output += '<th><center>'+value+'</center></th>'})
+            table_output += '</tr>';
+           
+           //fill table Data
+           tableData.forEach(obj => {
+                table_output += '<tr>';
+                  headerArry.forEach((value) =>{ table_output += '<td>'+obj[value]+'</td>'})            
+                table_output += '</tr>';             
+                            });
+            //Close table  
+            table_output += '</table>';
+            
+            //Draw Table at Html
+            document.getElementById('table_data').innerHTML = table_output;
 
 
-              <script>
-              
-              var config = {
-                    apiKey: "AIzaSyA-NJwqSPTGmJfNK38rFVVI1ZrLHIk1FyU",
-                    authDomain: "prj-3750-200.firebaseapp.com",
-                    databaseURL: "https://prj-3750-200-default-rtdb.firebaseio.com",
-                    projectId: "prj-3750-200",
-                    storageBucket: "prj-3750-200.appspot.com",
-                    messagingSenderId: "891156987269",
-                    appId: "1:891156987269:web:3af5e709299d29e6e658ec"
-                     };
-
-              firebase.initializeApp(config);
-              var auth = firebase.auth();
-              auth.onAuthStateChanged(firebaseUser => {
-                // check email
-              if(firebaseUser){
-                  const usershown = document.getElementById("Userlogged");
-                  usershown.innerHTML=auth.currentUser.email;
-                  console.log( auth.currentUser.uid);
-                  
-                } else{
-                  auth.signInWithEmailAndPassword("mostafa.tawfik@enppi.com", "asd123").
-                then(function(user){
-                  console.log(user)
-                }, function(error) {
-                  console.log(error.message);
-                  // error message show that you need to enable that authentication in firebase
-                });
-                }
-
-              });
 
 
-              // Firebase Database Reference and the child
-              const dbRef = firebase.database().ref();
-              const RFI_Ref = dbRef.child('RFI');  
-              RFI_Ref.on("child_changed", snap => {
+      }
 
-              snap.forEach(childSnap => {
+     async function writeData(){
+      try {
+        const update = {
+                      title: 'A blog post by Mostafa',
+                      body: 'TEST by SHEHAB',
+                      userId: 122,
+                        };
 
-              let key = childSnap.key,
-                value = childSnap.val()
-                
-              console.log(key +"--" + value.RFI_No)
+        const options = {
+                      method: 'PUT',
+                    headers: {
+                                'Content-Type': 'application/json',
+                              },
+                    body: JSON.stringify(update),
+                        };
 
-            });
+                        fetch('https://prj-3750-200-default-rtdb.firebaseio.com/Users/2/.json', options)
+  .then(data => {
+      if (!data.ok) {
+        throw Error(data.status);
+       }else{console.log(data.ok)}
+       return data.json();
+      }).then(update => { console.log(update);
+      });
 
+      } catch(e) {
+          console.log(e);
+        }
+      }
 
-            })          
-                          
-                          
-              var sortBy="serial";
-                var importedData= undefined;
-                //const DatabaseKeys = ["RFI_No","RFI_Rev","Owner_Rep","Contractor","ITP_No","Location_Area","Inspection_DateTime","Activity","Attachments","Contractor_Name","Contractor_Date","Contractor_Sign","Enppi_Name","Enppi_Date","Enppi_Sign","Company_Name","Company_Date","Company_sign","Inspection_Status","Inspection_Comment"];
-               // const DatabaseKeys = ["ACTIVITY","AREA","ATTACHMENTS","COMPANY_DATE","COMPANY_ENG","COMPANY_NICKNAME","COMPANY_SIGN","CONSTRUCTION_DATE","CONSTRUCTION_ENG","CONSTRUCTION_NICKNAME","CONSTRUCTION_SIGN","CONTRACTOR_DATE","CONTRACTOR_ENG","CONTRACTOR_NICKNAME","CONTRACTOR_SIGN","DISCIPLINE_NAME","INSPECTION_COMMENT","INSPECTION_DATE","INSPECTION_STATUS","INSPECTION_TIME","ITP_NO","RFI_NO","RFI_PARENT"];
-               
-              
-              
-              
-              
-              
-               var DatabaseKeys =["RFI_NO","DISCIPLINE_NAME","AREA","ACTIVITY","ATTACHMENTS","INSPECTION_DATE","INSPECTION_TIME","INSPECTION_COMMENT","INSPECTION_STATUS"];
-               async function databaseFetch() {
-                          try { 
-                          let response = await fetch('https://prj-3750-200-default-rtdb.firebaseio.com/RFI/.json');
-                            console.log(response.ok)
-                          if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                          } else {
-                            const data = await response.json() ;
-                            unsortedList=data;
-                            
-                           // const sortedList2 = unsortedList.sort((a, b) => a.age.localeCompare(b.age));
-                            //console.log(sortedList2);
-                          importedData=data;
-                          console.log(importedData.length);
-                          Tabledraw(data,DatabaseKeys);
-                          
-                          }
-                        } catch(e) {
-                          console.log(e);
-                        }
-                      }
-                
-                      async function Tabledraw(tableData,headerArry){
-                        var i = 0;
-                
-                           var table_output = '<table class="table table-striped table-bordered table-responsive">';
-                            //Draw header 
-                            table_output += '<tr>'
-                              headerArry.forEach((value) =>{ table_output += '<th>'+value+'</th>'})
-                            table_output += '</tr>';
-                           
-                           //fill table Data
-                           var ii=0;
-                           tableData.forEach(obj => { ii+=1;
-                                table_output += '<tr>';
-                                  headerArry.forEach((value,index) =>{ table_output += '<td>'+obj[value]+'</td>'})            
-                                table_output += '<td><input type="button" value="P" onclick="go('+ii+')"></td></tr>';             
-                                            });
-                            //Close table  
-                            table_output += '</table>';
-                            
-                            //Draw Table at Html
-                            document.getElementById('table_data').innerHTML = table_output;
-                
-                
-                
-                
-                      }
-                
-                     async function writeData(){
-                      try {
-                        var  update = {
-                          ACTIVITY : "INSPECTION FOR CONDUIT INSTALLATION AT CELLAR",
-                          AREA : "U99",
-                          ATTACHMENTS : "5020-250-12-HDC-001 REV.1",
-                          COMPANY_DATE : "21/2/2022",
-                          COMPANY_ENG : "MOHAMED MAHMOUD",
-                          COMPANY_NICKNAME : "SOPC",
-                          COMPANY_SIGN : "21/2/2022",
-                          CONSTRUCTION_DATE : "21/2/2022",
-                          CONSTRUCTION_ENG : "AHMED FATHY",
-                          CONSTRUCTION_NICKNAME : "PETROJET",
-                          CONSTRUCTION_SIGN : "21/2/2022",
-                          CONTRACTOR_DATE : "21/2/2022",
-                          CONTRACTOR_ENG : "MOHAMED MAHMOUD",
-                          CONTRACTOR_NICKNAME : "SOPC",
-                          CONTRACTOR_SIGN : "21/2/2022",
-                          DISCIPLINE_NAME : "INSTRUMENT",
-                          INSPECTION_COMMENT : "TOUCHUP, CLEANING",
-                          INSPECTION_DATE : "22/2/2022",
-                          INSPECTION_STATUS : "ACCEPTED WITH COMMENTS",
-                          INSPECTION_TIME : "9:00AM",
-                          TP_NO : "5020-250-ITP-INST-001",
-                          RFI_NO : "5020-250-RFI-001",
-                          RFI_PARENT : ""
-
-                                        };
-                
-                        
-                urlText='https://prj-3750-200-default-rtdb.firebaseio.com/RFI/'+importedData.length+'/.json'
-                update.RFI_No=importedData.length;
-                let now = new Date();
-                update.Inspection_DateTime= now;
-                var options = {
-                                    method: 'PUT',
-                                    headers: {
-                                                'Content-Type': 'application/json',
-                                              },
-                                    body: JSON.stringify(update),
-                                        };
-                console.log(update.RFI_No," ",update.Contractor_Date);
-                fetch(urlText, options)
-                  .then(data => {
-                      if (!data.ok) {
-                        throw Error(data.status);
-                       }else{console.log(data.ok)}
-                       return data.json(); 
-                      }).then(update => { console.log(update);databaseFetch();
-                      });
-                
-                      } catch(e) {
-                          console.log(e);
-                        }
-                      }
-                
-
-                      function go(RFI_Num){
-              // (A) VARIABLES TO PASS
-                      
-                      var params = new URLSearchParams();
-                       params.append("RFI_No", RFI_Num);
-                       var url = "RFI_PRINT.html?" + params.toString();
-                      console.log(url);
-                        window.open(url);
-                    };
-
-                    function sendEmail() {
-                        console.log('sending...')
-                      	Email.send({
-	                    	Host: "smtp.gmail.com",
-	                    	Username : "enppipqc@gmail.com",
-	                    	Password : "Enppi@500",
-	                    	To : 'mostafa.yehya1973@gmail.com, enppipqc@gmail.com',
-	                    	From : "enppipqc@gmail.com",
-	                    	Subject : "email subject",
-                        Body : "<h1>email subject</h1>",
-                          }).then(
-                            message => alert("mail sent successfully")
-                            );
-                          }
-
-                
-                      //test();
-                     //databaseFetch();
-                </script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+      //test();
+     databaseFetch();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>   
 </body>
 </html>
